@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>AUREVIA — Premium Skincare | Demo Store</title>
+  <meta name="description" content="Aurevia is a fictional premium skincare brand. This is a demonstration e-commerce website showcasing cinematic 3D product presentations and luxury shopping experiences.">
+  <meta name="theme-color" content="#0a0a0a">
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Fonts: Italiana (display) + Inter (UI) -->
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- Favicon (inline SVG) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+
+  <!-- Import Map for Three.js -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+    }
+  }
+  </script>
+
+  <!-- Inline critical styles for preloader (shown before CSS loads) -->
+  <style>
+    .preloader {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: #0a0a0a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+    .preloader.fade-out {
+      opacity: 0;
+      visibility: hidden;
+    }
+    .preloader-logo {
+      font-family: 'Italiana', 'Georgia', serif;
+      font-size: 2.5rem;
+      color: #f5f0e8;
+      letter-spacing: 0.3em;
+      margin-bottom: 2rem;
+    }
+    .preloader-bar-track {
+      width: 200px;
+      height: 1px;
+      background: rgba(245, 240, 232, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+    .preloader-bar-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #b8956a, #d4af7a);
+      transition: width 0.3s ease;
+    }
+    .preloader-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      color: rgba(245, 240, 232, 0.4);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Preloader -->
+  <div class="preloader" id="preloader" role="status" aria-label="Loading">
+    <div class="preloader-logo">AUREVIA</div>
+    <div class="preloader-bar-track">
+      <div class="preloader-bar-fill" id="preloader-bar"></div>
+    </div>
+    <div class="preloader-text">Preparing your experience</div>
+  </div>
+
+  <!-- Custom Cursor (desktop only) -->
+  <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-outline" id="cursor-outline" aria-hidden="true"></div>
+
+  <!-- Skip to Content (accessibility) -->
+  <a href="#main-content" class="sr-only" style="position:absolute;top:-40px;left:0;background:#d4af7a;color:#0a0a0a;padding:8px 16px;z-index:99999;transition:top 0.3s;" onfocus="this.style.top='0'" onblur="this.style.top='-40px'">Skip to main content</a>
+
+  <!-- Application Root -->
+  <div id="app">
+    <!-- Header (rendered by JS) -->
+    <header class="header" id="site-header" role="banner"></header>
+
+    <!-- Main Content -->
+    <main id="main-content" role="main">
+      <!-- Content sections rendered dynamically by app.js -->
+    </main>
+
+    <!-- Footer (rendered by JS) -->
+    <footer id="site-footer" role="contentinfo"></footer>
+  </div>
+
+  <!-- Cart Drawer (rendered by JS) -->
+  <div id="cart-drawer-root"></div>
+
+  <!-- Search Overlay (rendered by JS) -->
+  <div id="search-overlay-root"></div>
+
+  <!-- Toast Notifications -->
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Mobile Nav Overlay -->
+  <div id="mobile-nav-root"></div>
+
+  <!-- Preloader Script (runs immediately) -->
+  <script>
+    // Simulate loading progress
+    (function() {
+      const bar = document.getElementById('preloader-bar');
+      let progress = 0;
+      const steps = [
+        { target: 30, delay: 100 },
+        { target: 55, delay: 300 },
+        { target: 75, delay: 500 },
+        { target: 90, delay: 800 },
+      ];
+      steps.forEach(step => {
+        setTimeout(() => {
+          if (bar) bar.style.width = step.target + '%';
+        }, step.delay);
+      });
+      // Final progress set by app.js when ready
+      window._completePreloader = function() {
+        if (bar) bar.style.width = '100%';
+        setTimeout(() => {
+          const preloader = document.getElementById('preloader');
+          if (preloader) {
+            preloader.classList.add('fade-out');
+            setTimeout(() => {
+              preloader.style.display = 'none';
+            }, 900);
+          }
+        }, 400);
+      };
+    })();
+  </script>
+
+  <!-- Three.js Scene Module -->
+  <script type="module" src="scene.js"></script>
+
+  <!-- Main Application Module -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
