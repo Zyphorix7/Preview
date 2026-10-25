@@ -548,6 +548,19 @@ body.banner-dismissed .header {
   top: 0;
 }
 
+/* On home view initial viewport, let the embedded hero navbar be active; show sticky header when scrolled */
+body.home-view .header:not(.scrolled) {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-12px);
+}
+
+body.home-view .header.scrolled {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
 .header.scrolled {
   background-color: #0e0e10;
   border-bottom: 1px solid #222226;
@@ -804,7 +817,465 @@ body.banner-dismissed .header {
 }
 
 /* --------------------------------------------------------------------------
-   7. HERO / CINEMATIC SHOWCASE SECTION
+   7. REFERENCE IMAGE REDESIGN: WARM LUXURY HERO & COMPACT FLOATING CARDS
+   -------------------------------------------------------------------------- */
+.ref-hero-section {
+  position: relative;
+  width: 100%;
+  padding: 24px 28px 36px;
+  background-color: #ede7df; /* Soft neutral stone background matching reference */
+  box-sizing: border-box;
+}
+
+.ref-hero-card {
+  position: relative;
+  max-width: 1360px;
+  margin: 0 auto;
+  min-height: 840px;
+  border-radius: 44px;
+  background: linear-gradient(135deg, #d3c7bc 0%, #c4b5a8 42%, #b1a092 100%);
+  box-shadow: 0 28px 75px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 36px 48px 40px;
+  box-sizing: border-box;
+}
+
+/* Product-Matching Radiant Glow behind 3D Perfume Model */
+.ref-hero-3d-backdrop {
+  position: absolute;
+  top: 50%;
+  left: 58%;
+  transform: translate(-50%, -50%);
+  width: 640px;
+  height: 640px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 240, 210, 0.75) 0%, rgba(230, 195, 140, 0.45) 35%, rgba(200, 180, 160, 0.1) 65%, transparent 78%);
+  pointer-events: none;
+  filter: blur(28px);
+  z-index: 1;
+}
+
+/* 3D Model Focal Container */
+.ref-hero-model-container {
+  position: absolute;
+  top: 50%;
+  left: 58%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 580px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+.ref-hero-sketchfab-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: transparent;
+}
+
+.ref-model-attribution {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  background: rgba(18, 18, 20, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.75);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 3;
+}
+
+.ref-model-attribution a {
+  color: #ffe0b2;
+  text-decoration: underline;
+}
+
+/* 1. Top Minimal Navigation Bar (Inside Hero Container) */
+.ref-hero-nav {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.ref-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.ref-brand-icon-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #111111;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  transition: transform 0.2s ease;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.ref-brand-icon-btn:hover {
+  transform: scale(1.06);
+}
+
+.ref-mobile-nav-toggle {
+  display: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.ref-mobile-nav-toggle span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: #111111;
+  border-radius: 1px;
+}
+
+.ref-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.ref-nav-links a {
+  color: rgba(255, 255, 255, 0.95);
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.ref-nav-links a:hover {
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.ref-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ref-icon-circle-btn {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  border: none;
+  color: #111111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+}
+
+.ref-icon-circle-btn:hover {
+  background: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.ref-wishlist-counter,
+.ref-cart-counter {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  background: #111111;
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 9999px;
+  line-height: 1;
+  min-width: 18px;
+  text-align: center;
+}
+
+.ref-profile-btn {
+  padding: 0;
+  overflow: hidden;
+}
+
+.ref-nav-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 2. Left-Side Editorial Content */
+.ref-hero-editorial {
+  position: relative;
+  z-index: 5;
+  max-width: 440px;
+  margin-top: 50px;
+  margin-bottom: auto;
+}
+
+.ref-hero-headline {
+  font-family: var(--font-sans);
+  font-size: clamp(3rem, 5.5vw, 4.6rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: #ffffff;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.12);
+}
+
+.ref-hero-subtext {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  line-height: 1.62;
+  color: rgba(255, 255, 255, 0.88);
+  max-width: 390px;
+}
+
+/* 3. Upper-Right Product Information & Pill Action Button */
+.ref-hero-aside-info {
+  position: absolute;
+  top: 130px;
+  right: 48px;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  max-width: 250px;
+}
+
+.ref-social-proof {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ref-avatar-stack {
+  display: flex;
+  align-items: center;
+}
+
+.ref-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+  margin-left: -10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ref-avatar:first-child {
+  margin-left: 0;
+}
+
+.ref-social-count {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.ref-featured-title {
+  font-family: var(--font-sans);
+  font-size: 0.86rem;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 500;
+}
+
+.ref-add-to-cart-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  background: #ffffff;
+  color: #111111;
+  border: none;
+  border-radius: 9999px;
+  padding: 6px 6px 6px 20px;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ref-add-to-cart-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16);
+}
+
+.ref-cart-icon-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #111111;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 4. Floating Bottom Product Cards (Reference Layout) */
+.ref-hero-bottom-cards {
+  position: relative;
+  z-index: 8;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 40px;
+}
+
+.ref-cards-left {
+  display: flex;
+  align-items: flex-end;
+  gap: 18px;
+}
+
+.ref-cards-right {
+  display: flex;
+  align-items: flex-end;
+}
+
+.ref-floating-card {
+  width: 180px;
+  background: #ffffff;
+  border-radius: 22px;
+  padding: 16px 14px 14px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.ref-floating-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 22px 45px rgba(0, 0, 0, 0.12);
+}
+
+.ref-card-media {
+  width: 100%;
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.ref-card-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform 0.4s ease;
+}
+
+.ref-floating-card:hover .ref-card-img {
+  transform: scale(1.05);
+}
+
+.ref-card-price {
+  font-family: var(--font-sans);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #111111;
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+
+.ref-card-name {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.25;
+  margin-bottom: 8px;
+  min-height: 2em;
+}
+
+.ref-card-name a {
+  color: #222222;
+  text-decoration: none;
+}
+
+.ref-card-name a:hover {
+  color: #b8956a;
+}
+
+.ref-card-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 6px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.ref-card-volume {
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  line-height: 1.2;
+  color: #888888;
+}
+
+.ref-card-btn {
+  background: #111111;
+  color: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  padding: 4px 14px;
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.ref-card-btn:hover {
+  background: #333333;
+  transform: scale(1.05);
+}
+
+/* --------------------------------------------------------------------------
+   7b. LEGACY HERO / CINEMATIC SHOWCASE SECTION
    -------------------------------------------------------------------------- */
 .hero-showcase {
   position: relative;
@@ -4040,4 +4511,191 @@ body.banner-dismissed .header {
   color: var(--accent-champagne);
   border-bottom-color: var(--accent-champagne);
 }
+
+/* --------------------------------------------------------------------------
+   REFERENCE HERO RESPONSIVE MEDIA QUERIES
+   -------------------------------------------------------------------------- */
+@media (max-width: 1200px) {
+  .ref-hero-card {
+    padding: 30px 36px 36px;
+  }
+
+  .ref-hero-model-container {
+    left: 62%;
+    width: 440px;
+    height: 500px;
+  }
+
+  .ref-hero-3d-backdrop {
+    left: 62%;
+    width: 520px;
+    height: 520px;
+  }
+
+  .ref-hero-aside-info {
+    right: 36px;
+    top: 110px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .ref-hero-section {
+    padding: 16px 16px 24px;
+  }
+
+  .ref-hero-card {
+    padding: 24px 28px 32px;
+    border-radius: 36px;
+    min-height: auto;
+  }
+
+  .ref-hero-model-container {
+    left: 65%;
+    width: 380px;
+    height: 440px;
+  }
+
+  .ref-hero-3d-backdrop {
+    left: 65%;
+    width: 440px;
+    height: 440px;
+  }
+
+  .ref-hero-aside-info {
+    right: 28px;
+    top: 90px;
+  }
+
+  .ref-hero-bottom-cards {
+    margin-top: 30px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .ref-hero-section {
+    padding: 8px 8px 16px;
+  }
+
+  .ref-hero-card {
+    border-radius: 28px;
+    padding: 20px 16px 24px;
+    min-height: auto;
+  }
+
+  .ref-nav-links {
+    display: none;
+  }
+
+  .ref-mobile-nav-toggle {
+    display: flex;
+  }
+
+  .ref-hero-editorial {
+    margin-top: 24px;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .ref-hero-headline {
+    font-size: clamp(2.3rem, 8.5vw, 3.2rem);
+    margin-bottom: 12px;
+  }
+
+  .ref-hero-subtext {
+    margin: 0 auto;
+    font-size: 0.88rem;
+  }
+
+  .ref-hero-model-container {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: 100%;
+    height: 380px;
+    margin: 20px auto 10px;
+  }
+
+  .ref-hero-3d-backdrop {
+    top: 45%;
+    left: 50%;
+    width: 320px;
+    height: 320px;
+  }
+
+  .ref-hero-aside-info {
+    position: relative;
+    top: auto;
+    right: auto;
+    align-items: center;
+    text-align: center;
+    max-width: 100%;
+    margin: 10px auto 20px;
+  }
+
+  .ref-hero-bottom-cards {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .ref-cards-left,
+  .ref-cards-right {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    width: 100%;
+  }
+
+  .ref-cards-right {
+    grid-template-columns: 1fr;
+  }
+
+  .ref-floating-card {
+    width: 100%;
+    border-radius: 18px;
+    padding: 12px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ref-hero-card {
+    border-radius: 22px;
+    padding: 16px 12px 20px;
+  }
+
+  .ref-hero-model-container {
+    height: 320px;
+  }
+
+  .ref-hero-3d-backdrop {
+    width: 260px;
+    height: 260px;
+  }
+
+  .ref-floating-card {
+    padding: 10px 8px;
+  }
+
+  .ref-card-price {
+    font-size: 1rem;
+  }
+
+  .ref-card-name {
+    font-size: 0.72rem;
+  }
+
+  .ref-card-volume {
+    font-size: 0.58rem;
+  }
+
+  .ref-card-btn {
+    padding: 4px 10px;
+    font-size: 0.65rem;
+  }
+}
+
 

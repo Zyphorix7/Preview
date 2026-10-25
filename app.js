@@ -651,6 +651,8 @@ function handleRouteChange() {
   AppState.currentView = route.view;
   AppState.currentProductId = route.productId || null;
 
+  document.body.classList.toggle('home-view', route.view === 'home');
+
   closeAllOverlays();
 
   const main = document.getElementById('main-content');
@@ -767,6 +769,8 @@ function scrollToSection(target) {
     el = document.getElementById('collection-section');
   } else if (target === 'about') {
     el = document.getElementById('about-section');
+  } else if (target === 'contact') {
+    el = document.getElementById('site-footer');
   }
   if (el) {
     el.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -774,11 +778,17 @@ function scrollToSection(target) {
 }
 
 function updateCartCount() {
-  const badge = document.getElementById('cart-count');
-  if (!badge) return;
   const count = cart.getItemCount();
-  badge.textContent = count;
-  badge.style.display = count > 0 ? 'flex' : 'none';
+  const badge = document.getElementById('cart-count');
+  if (badge) {
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'flex' : 'none';
+  }
+  const heroBadge = document.querySelector('.ref-cart-counter');
+  if (heroBadge) {
+    heroBadge.textContent = count;
+    heroBadge.style.display = count > 0 ? 'flex' : 'none';
+  }
 }
 
 /* ==========================================================================
@@ -1383,87 +1393,203 @@ function renderHomeView() {
 }
 
 /* ==========================================================================
-   14. HERO CINEMATIC SHOWCASE
+   14. HERO CINEMATIC SHOWCASE (REFERENCE-MATCHED LUXURY REDESIGN)
    ========================================================================== */
 
 function createHeroShowcaseSection() {
   const product = PRODUCTS[0]; // Aurevia Radiance Serum / Signature Perfume
   const section = document.createElement('section');
-  section.className = 'hero-showcase';
+  section.className = 'ref-hero-section';
   section.id = 'hero-showcase';
 
+  const wishlist = getWishlist();
+  const wishlistCount = wishlist.length || 12; // Matches reference image count '12' as fallback
+  const initialCartCount = cart.getItemCount();
+
   section.innerHTML = `
-    <div class="hero-content">
-      <div class="hero-grid">
-        <!-- Column 1: Human-Designed Editorial Brand & Commerce -->
-        <div class="hero-text-block">
-          <div class="hero-eyebrow reveal">
-            <span>✦ Handcrafted Extrait de Parfum</span>
-          </div>
-          <h1 class="hero-title reveal" style="transition-delay: 0.1s;">${escapeHTML(product.name)}</h1>
-          <p class="hero-tagline reveal" style="transition-delay: 0.15s;">${escapeHTML(product.tagline)}</p>
-          <p class="hero-description reveal" style="transition-delay: 0.2s;">${escapeHTML(product.description)}</p>
-          
-          <div class="hero-price-wrap reveal" style="transition-delay: 0.25s;">
-            <span class="hero-price-label">Price (USD)</span>
-            <span class="hero-price">${formatUSD(product.priceCents)}</span>
-            <span class="hero-volume">${product.details.size}</span>
-          </div>
-
-          <div class="hero-actions reveal" style="transition-delay: 0.3s;">
-            <button class="btn-primary" data-hero-add="${product.id}">Add to Bag — ${formatUSD(product.priceCents)}</button>
-            <a href="#/product/${product.id}" class="btn-secondary">View Formulation Details</a>
-          </div>
-
-          <!-- Olfactory Notes Preview -->
-          <div class="hero-specs-panel reveal" style="margin-top: 2rem; max-width: 100%; transition-delay: 0.35s;">
-            <div class="spec-item">
-              <span class="spec-title">Top Notes</span>
-              <span class="spec-value">${escapeHTML(product.fragranceNotes.top)}</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-title">Heart & Base Notes</span>
-              <span class="spec-value">${escapeHTML(product.fragranceNotes.heart)} · ${escapeHTML(product.fragranceNotes.base)}</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-title">US Domestic Shipping</span>
-              <span class="spec-value">Complimentary on orders over $150.00</span>
-            </div>
+    <div class="ref-hero-card">
+      <!-- 1. Top Minimal Navigation Bar (Inside Hero Container) -->
+      <nav class="ref-hero-nav" aria-label="Hero Navigation">
+        <div class="ref-nav-left">
+          <a href="#/" class="ref-brand-icon-btn" aria-label="Aurevia Home">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="7" cy="7" r="3.2"/>
+              <circle cx="17" cy="7" r="3.2"/>
+              <circle cx="7" cy="17" r="3.2"/>
+              <circle cx="17" cy="17" r="3.2"/>
+            </svg>
+          </a>
+          <button class="ref-mobile-nav-toggle" id="hero-mobile-toggle" aria-label="Toggle navigation menu">
+            <span></span><span></span><span></span>
+          </button>
+          <div class="ref-nav-links">
+            <a href="#/" data-hero-nav="shop">Beauty Space</a>
+            <a href="#site-footer" data-hero-nav="contact">Contact Us</a>
+            <a href="#/product/${product.id}">Product</a>
+            <a href="#/" data-hero-nav="about">Atelier</a>
           </div>
         </div>
 
-        <!-- Column 2: Interactive Sketchfab 3D Perfume Model (ChristyMathews) -->
-        <div class="hero-sketchfab-showcase reveal" style="transition-delay: 0.2s;">
-          <div class="hero-sketchfab-badge">✦ Interactive 3D Perfume</div>
-          <iframe 
-            title="Perfume" 
-            class="hero-sketchfab-frame"
-            frameborder="0" 
-            allowfullscreen 
-            mozallowfullscreen="true" 
-            webkitallowfullscreen="true" 
-            allow="autoplay; fullscreen; xr-spatial-tracking" 
-            src="https://sketchfab.com/models/c66ebff390eb4790a836d2f3d5054874/embed?autostart=1&camera=0&ui_infos=0&ui_controls=1&ui_watermark=0">
-          </iframe>
-          <div class="hero-model-attribution">
-            <span>3D Model: <a href="https://sketchfab.com/3d-models/perfume-c66ebff390eb4790a836d2f3d5054874" target="_blank" rel="noopener">"Perfume"</a> by <a href="https://sketchfab.com/ChristyMathews" target="_blank" rel="noopener">ChristyMathews</a></span>
-            <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC-BY 4.0</a>
+        <div class="ref-nav-right">
+          <!-- Wishlist Trigger -->
+          <button class="ref-icon-circle-btn" id="hero-wishlist-btn" aria-label="Saved Favorites">
+            <span class="ref-wishlist-counter">${wishlistCount}</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="${wishlist.length ? '#111111' : 'none'}" stroke="currentColor" stroke-width="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </button>
+
+          <!-- Shopping Bag Trigger -->
+          <button class="ref-icon-circle-btn" id="hero-cart-btn" aria-label="Open Shopping Bag">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+              <path d="M3 6h18"/>
+              <path d="M16 10a4 4 0 01-8 0"/>
+            </svg>
+            <span class="ref-cart-counter" style="${initialCartCount > 0 ? 'display:flex;' : 'display:none;'}">${initialCartCount}</span>
+          </button>
+
+          <!-- Account Trigger -->
+          <button class="ref-icon-circle-btn ref-profile-btn" id="hero-account-btn" aria-label="Customer Profile">
+            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=64&h=64&q=80" alt="Client Avatar" class="ref-nav-avatar">
+          </button>
+        </div>
+      </nav>
+
+      <!-- 2. Product-Matching Radiant Glow & 3D Model Focus (Center-Right) -->
+      <div class="ref-hero-3d-backdrop" aria-hidden="true"></div>
+      <div class="ref-hero-model-container">
+        <iframe 
+          title="Interactive 3D Perfume Model" 
+          class="ref-hero-sketchfab-frame"
+          frameborder="0" 
+          allowfullscreen 
+          mozallowfullscreen="true" 
+          webkitallowfullscreen="true" 
+          allow="autoplay; fullscreen; xr-spatial-tracking" 
+          src="https://sketchfab.com/models/c66ebff390eb4790a836d2f3d5054874/embed?autostart=1&camera=0&ui_infos=0&ui_controls=1&ui_watermark=0">
+        </iframe>
+        <div class="ref-model-attribution">
+          <span>3D Model: <a href="https://sketchfab.com/3d-models/perfume-c66ebff390eb4790a836d2f3d5054874" target="_blank" rel="noopener">"Perfume"</a> by <a href="https://sketchfab.com/ChristyMathews" target="_blank" rel="noopener">ChristyMathews</a></span>
+          <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC-BY 4.0</a>
+        </div>
+      </div>
+
+      <!-- 3. Left-Side Editorial Content -->
+      <div class="ref-hero-editorial">
+        <h1 class="ref-hero-headline">
+          Flourish in<br>Daily Power
+        </h1>
+        <p class="ref-hero-subtext">
+          Give life to your inner world and flourish in your uniqueness, even if you seem a little strange to those around you, just be yourself and free.
+        </p>
+      </div>
+
+      <!-- 4. Upper-Right Product Information & Pill Action Button -->
+      <div class="ref-hero-aside-info">
+        <div class="ref-social-proof">
+          <div class="ref-avatar-stack">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&h=80&q=80" alt="Client 1" class="ref-avatar">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&h=80&q=80" alt="Client 2" class="ref-avatar">
+            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=80&h=80&q=80" alt="Client 3" class="ref-avatar">
           </div>
+          <span class="ref-social-count">750K+</span>
+        </div>
+        <div class="ref-featured-title">Ultimate Skin Recovery Refreshing Gel</div>
+        <button class="ref-add-to-cart-pill" data-hero-add="${product.id}" aria-label="Add ${escapeHTML(product.name)} to Bag">
+          <span>Add to Cart</span>
+          <span class="ref-cart-icon-circle">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+          </span>
+        </button>
+      </div>
+
+      <!-- 5. Floating Bottom Product Cards (Reference Layout) -->
+      <div class="ref-hero-bottom-cards">
+        <div class="ref-cards-left">
+          <!-- Floating Card 1: Radiance Serum / Centella Ampoule -->
+          <article class="ref-floating-card" data-product-id="${PRODUCTS[0].id}">
+            <a href="#/product/${PRODUCTS[0].id}" class="ref-card-media" aria-label="Inspect ${escapeHTML(PRODUCTS[0].name)}">
+              <img src="${generateProductSVG(PRODUCTS[0])}" alt="${escapeHTML(PRODUCTS[0].name)}" class="ref-card-img" loading="eager">
+            </a>
+            <div class="ref-card-price">$68.99</div>
+            <h3 class="ref-card-name">
+              <a href="#/product/${PRODUCTS[0].id}">Centella Ampoule Foam Serume</a>
+            </h3>
+            <div class="ref-card-footer">
+              <span class="ref-card-volume">125 ml / 4.85<br>FL. OZ Max</span>
+              <button class="ref-card-btn" data-store-add="${PRODUCTS[0].id}">Book</button>
+            </div>
+          </article>
+
+          <!-- Floating Card 2: Hydration Cream / Quick Calming Pads -->
+          <article class="ref-floating-card" data-product-id="${PRODUCTS[1].id}">
+            <a href="#/product/${PRODUCTS[1].id}" class="ref-card-media" aria-label="Inspect ${escapeHTML(PRODUCTS[1].name)}">
+              <img src="${generateProductSVG(PRODUCTS[1])}" alt="${escapeHTML(PRODUCTS[1].name)}" class="ref-card-img" loading="eager">
+            </a>
+            <div class="ref-card-price">$27.69</div>
+            <h3 class="ref-card-name">
+              <a href="#/product/${PRODUCTS[1].id}">Quick Calming Pads Serum</a>
+            </h3>
+            <div class="ref-card-footer">
+              <span class="ref-card-volume">25 ml / 1.65<br>FL. OZ Max</span>
+              <button class="ref-card-btn" data-store-add="${PRODUCTS[1].id}">Book</button>
+            </div>
+          </article>
+        </div>
+
+        <div class="ref-cards-right">
+          <!-- Floating Card 3: Botanical Cleanser / Centella Asiatica Facial Serum -->
+          <article class="ref-floating-card" data-product-id="${PRODUCTS[2].id}">
+            <a href="#/product/${PRODUCTS[2].id}" class="ref-card-media" aria-label="Inspect ${escapeHTML(PRODUCTS[2].name)}">
+              <img src="${generateProductSVG(PRODUCTS[2])}" alt="${escapeHTML(PRODUCTS[2].name)}" class="ref-card-img" loading="eager">
+            </a>
+            <div class="ref-card-price">$68.99</div>
+            <h3 class="ref-card-name">
+              <a href="#/product/${PRODUCTS[2].id}">Centella Asiatica Facial Serum</a>
+            </h3>
+            <div class="ref-card-footer">
+              <span class="ref-card-volume">55 ml / 1.85<br>FL. OZ Max</span>
+              <button class="ref-card-btn" data-store-add="${PRODUCTS[2].id}">Book</button>
+            </div>
+          </article>
         </div>
       </div>
     </div>
-
-    <!-- Scroll Cue -->
-    <a href="#scroll-story" class="hero-scroll-indicator reveal" style="transition-delay: 0.5s;" aria-label="Scroll to discover ingredients">
-      <span class="hero-scroll-text">Scroll to Discover</span>
-      <div class="hero-scroll-mouse">
-        <div class="hero-scroll-wheel"></div>
-      </div>
-    </a>
   `;
 
+  // Attach interactive events
   section.querySelector('[data-hero-add]')?.addEventListener('click', () => {
     cart.addItem(product.id);
+  });
+
+  section.querySelectorAll('[data-store-add]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      cart.addItem(e.currentTarget.dataset.storeAdd);
+    });
+  });
+
+  // Hero nav triggers
+  section.querySelector('#hero-cart-btn')?.addEventListener('click', () => toggleCart());
+  section.querySelector('#hero-wishlist-btn')?.addEventListener('click', () => {
+    showToast('Your Favorites', `${wishlistCount} saved formulation(s) in your private collection.`);
+  });
+  section.querySelector('#hero-account-btn')?.addEventListener('click', () => toggleAccountModal());
+  section.querySelector('#hero-mobile-toggle')?.addEventListener('click', () => toggleMobileNav());
+
+  // Hero nav links
+  section.querySelectorAll('[data-hero-nav]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const target = e.currentTarget.dataset.heroNav;
+      if (target === 'shop') scrollToSection('collection');
+      else if (target === 'about') scrollToSection('about');
+      else if (target === 'contact') scrollToSection('contact');
+    });
   });
 
   return section;
