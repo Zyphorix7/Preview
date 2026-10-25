@@ -1668,7 +1668,10 @@ function renderStorefrontGrid() {
           <img class="product-card-img" src="${generateProductSVG(p)}" alt="${escapeHTML(p.name)}" loading="lazy">
         </a>
         <div class="product-card-actions">
-          <button class="btn-quick-add" data-store-add="${p.id}">+ Quick Add to Bag</button>
+          <button class="btn-quick-add" data-store-add="${p.id}">
+            <span class="btn-quick-add-full">+ Quick Add to Bag</span>
+            <span class="btn-quick-add-short">+ Quick Add</span>
+          </button>
         </div>
       </div>
       <div class="product-card-info">

@@ -1535,6 +1535,15 @@ body.banner-dismissed .header {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
+.btn-quick-add-short {
+  display: none;
+}
+
+.product-footer .btn-quick-add {
+  width: auto;
+  padding: 6px 14px;
+}
+
 /* Product Card Information */
 .product-card-info {
   padding: var(--space-lg);
@@ -3482,10 +3491,147 @@ body.banner-dismissed .header {
     display: flex;
   }
 
+  /* 2-Column Mobile Grid for Product Catalog (Amazon-style 2-per-row horizontal layout) */
   .products-grid {
-    grid-template-columns: 1fr;
-    max-width: 440px;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px;
+    max-width: 100%;
     margin: 0 auto;
+    padding: 0 var(--space-md);
+  }
+
+  .collection-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-md);
+    padding: 0 var(--space-md);
+  }
+
+  .collection-filters {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 6px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .collection-filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .product-card {
+    border-radius: var(--radius-md);
+  }
+
+  .product-card-media {
+    aspect-ratio: 4 / 5;
+  }
+
+  .product-card-actions {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
+    transform: translateY(0);
+    opacity: 1;
+    z-index: 3;
+  }
+
+  .btn-quick-add {
+    padding: 7px 8px;
+    font-size: 0.68rem;
+    letter-spacing: 0.03em;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .btn-quick-add-full {
+    display: none;
+  }
+
+  .btn-quick-add-short {
+    display: inline;
+  }
+
+  .product-card-info {
+    padding: 10px 8px 12px;
+  }
+
+  .product-category {
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 2px;
+  }
+
+  .product-name {
+    font-size: 0.92rem;
+    line-height: 1.25;
+    margin-bottom: 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 2.3em;
+  }
+
+  .product-desc {
+    font-size: 0.73rem;
+    line-height: 1.35;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .product-footer {
+    padding-top: 6px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .product-price {
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+
+  .product-rating {
+    font-size: 0.68rem;
+    gap: 2px;
+  }
+
+  .product-rating-count {
+    font-size: 0.62rem;
+  }
+
+  .product-wishlist-btn {
+    width: 28px;
+    height: 28px;
+    top: 6px;
+    right: 6px;
+  }
+
+  .product-wishlist-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .product-badge {
+    font-size: 0.58rem;
+    padding: 2px 7px;
+    top: 6px;
+    left: 6px;
+  }
+
+  .search-results-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px;
+    padding: var(--space-sm);
   }
 
   .ingredient-cards-grid {
@@ -3572,11 +3718,70 @@ body.banner-dismissed .header {
     font-size: clamp(1.8rem, 8vw, 2.4rem);
   }
 
+  /* Small Mobile 2-Column Grid Adjustments */
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px;
+    padding: 0 8px;
+  }
+
   .product-card-actions {
+    position: absolute;
+    bottom: 6px;
+    left: 6px;
+    right: 6px;
     transform: translateY(0);
     opacity: 1;
-    position: static;
-    margin-top: var(--space-md);
+    z-index: 3;
+  }
+
+  .btn-quick-add {
+    padding: 6px 4px;
+    font-size: 0.62rem;
+    letter-spacing: 0.02em;
+  }
+
+  .product-card-info {
+    padding: 8px 6px 10px;
+  }
+
+  .product-name {
+    font-size: 0.85rem;
+    min-height: 2.2em;
+  }
+
+  .product-desc {
+    font-size: 0.7rem;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+
+  .product-price {
+    font-size: 0.95rem;
+  }
+
+  .product-wishlist-btn {
+    width: 26px;
+    height: 26px;
+    top: 5px;
+    right: 5px;
+  }
+
+  .product-wishlist-btn svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .product-badge {
+    font-size: 0.52rem;
+    padding: 2px 5px;
+    top: 5px;
+    left: 5px;
+  }
+
+  .search-results-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px;
   }
 
   .cart-header,
