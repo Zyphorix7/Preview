@@ -1,0 +1,91 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny all access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && request.auth.token.admin == true;
+    }
+
+    // Products collection: Public read, admin-only write
+    match /products/{productId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Categories: Public read, admin-only write
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Customer Users collection: User can read/update own record, cannot elevate to admin
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow create: if isAuthenticated() 
+                    && request.auth.uid == userId
+                    && (!('role' in request.resource.data) || request.resource.data.role == 'customer');
+      allow update: if isOwner(userId) 
+                    && (!('role' in request.resource.data) || request.resource.data.role == resource.data.role);
+      allow delete: if isAdmin();
+    }
+
+    // Orders collection:
+    // - Customers can read only their own orders
+    // - Authenticated users or guests can create orders with validated structure
+    // - Only admin or Cloud Functions can update/cancel
+    match /orders/{orderId} {
+      allow read: if isAuthenticated() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow create: if request.resource.data.items is list
+                    && request.resource.data.items.size() > 0
+                    && request.resource.data.totalCents is int
+                    && request.resource.data.totalCents > 0
+                    && (
+                      (!isAuthenticated() && request.resource.data.userId == 'guest')
+                      || (isAuthenticated() && request.resource.data.userId == request.auth.uid)
+                    );
+      allow update, delete: if isAdmin();
+    }
+
+    // Customer Carts: Isolated to owner
+    match /carts/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // Wishlists: Isolated to owner
+    match /wishlists/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // Reviews: Public read, authenticated create, admin update/delete
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isAdmin() || (isAuthenticated() && resource.data.userId == request.auth.uid);
+    }
+
+    // Site Settings & Shipping Methods: Public read, admin write
+    match /siteSettings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /shippingMethods/{methodId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}
