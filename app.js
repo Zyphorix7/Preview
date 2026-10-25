@@ -1387,61 +1387,75 @@ function renderHomeView() {
    ========================================================================== */
 
 function createHeroShowcaseSection() {
-  const product = PRODUCTS[0]; // Aurevia Radiance Serum
+  const product = PRODUCTS[0]; // Aurevia Radiance Serum / Signature Perfume
   const section = document.createElement('section');
   section.className = 'hero-showcase';
   section.id = 'hero-showcase';
 
   section.innerHTML = `
-    <!-- Three.js 3D Canvas Rig -->
-    <div class="hero-canvas-container" id="hero-canvas" aria-hidden="true"></div>
-
     <div class="hero-content">
       <div class="hero-grid">
+        <!-- Column 1: Human-Designed Editorial Brand & Commerce -->
         <div class="hero-text-block">
           <div class="hero-eyebrow reveal">
-            <span>✦ Master Formulation · Extrait Solaire</span>
+            <span>✦ Handcrafted Extrait de Parfum</span>
           </div>
           <h1 class="hero-title reveal" style="transition-delay: 0.1s;">${escapeHTML(product.name)}</h1>
-          <p class="hero-tagline reveal" style="transition-delay: 0.2s;">${escapeHTML(product.tagline)}</p>
-          <p class="hero-description reveal" style="transition-delay: 0.3s;">${escapeHTML(product.description)}</p>
+          <p class="hero-tagline reveal" style="transition-delay: 0.15s;">${escapeHTML(product.tagline)}</p>
+          <p class="hero-description reveal" style="transition-delay: 0.2s;">${escapeHTML(product.description)}</p>
           
-          <div class="hero-price-wrap reveal" style="transition-delay: 0.4s;">
-            <span class="hero-price-label">US Retail</span>
+          <div class="hero-price-wrap reveal" style="transition-delay: 0.25s;">
+            <span class="hero-price-label">Price (USD)</span>
             <span class="hero-price">${formatUSD(product.priceCents)}</span>
             <span class="hero-volume">${product.details.size}</span>
           </div>
 
-          <div class="hero-actions reveal" style="transition-delay: 0.5s;">
-            <a href="#/product/${product.id}" class="btn-primary">Explore In 3D</a>
-            <button class="btn-secondary" data-hero-add="${product.id}">Add to Bag</button>
+          <div class="hero-actions reveal" style="transition-delay: 0.3s;">
+            <button class="btn-primary" data-hero-add="${product.id}">Add to Bag — ${formatUSD(product.priceCents)}</button>
+            <a href="#/product/${product.id}" class="btn-secondary">View Formulation Details</a>
+          </div>
+
+          <!-- Olfactory Notes Preview -->
+          <div class="hero-specs-panel reveal" style="margin-top: 2rem; max-width: 100%; transition-delay: 0.35s;">
+            <div class="spec-item">
+              <span class="spec-title">Top Notes</span>
+              <span class="spec-value">${escapeHTML(product.fragranceNotes.top)}</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-title">Heart & Base Notes</span>
+              <span class="spec-value">${escapeHTML(product.fragranceNotes.heart)} · ${escapeHTML(product.fragranceNotes.base)}</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-title">US Domestic Shipping</span>
+              <span class="spec-value">Complimentary on orders over $150.00</span>
+            </div>
           </div>
         </div>
 
-        <aside class="hero-specs-panel reveal" style="transition-delay: 0.6s;">
-          <div class="spec-item">
-            <span class="spec-title">Fragrance Profile</span>
-            <span class="spec-value">${escapeHTML(product.fragranceNotes.top)}</span>
+        <!-- Column 2: Interactive Sketchfab 3D Perfume Model (ChristyMathews) -->
+        <div class="hero-sketchfab-showcase reveal" style="transition-delay: 0.2s;">
+          <div class="hero-sketchfab-badge">✦ Interactive 3D Perfume</div>
+          <iframe 
+            title="Perfume" 
+            class="hero-sketchfab-frame"
+            frameborder="0" 
+            allowfullscreen 
+            mozallowfullscreen="true" 
+            webkitallowfullscreen="true" 
+            allow="autoplay; fullscreen; xr-spatial-tracking" 
+            src="https://sketchfab.com/models/c66ebff390eb4790a836d2f3d5054874/embed?autostart=1&camera=0&ui_infos=0&ui_controls=1&ui_watermark=0">
+          </iframe>
+          <div class="hero-model-attribution">
+            <span>3D Model: <a href="https://sketchfab.com/3d-models/perfume-c66ebff390eb4790a836d2f3d5054874" target="_blank" rel="noopener">"Perfume"</a> by <a href="https://sketchfab.com/ChristyMathews" target="_blank" rel="noopener">ChristyMathews</a></span>
+            <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC-BY 4.0</a>
           </div>
-          <div class="spec-item">
-            <span class="spec-title">Heart & Base</span>
-            <span class="spec-value">${escapeHTML(product.fragranceNotes.base)}</span>
-          </div>
-          <div class="spec-item">
-            <span class="spec-title">Concentration</span>
-            <span class="spec-value">15% Active Vit-C + 24K Gold</span>
-          </div>
-          <div class="spec-item">
-            <span class="spec-title">US Domestic Shipping</span>
-            <span class="spec-value">Complimentary over $150.00</span>
-          </div>
-        </aside>
+        </div>
       </div>
     </div>
 
     <!-- Scroll Cue -->
-    <a href="#scroll-story" class="hero-scroll-indicator reveal" style="transition-delay: 0.7s;" aria-label="Scroll to discover ingredients">
-      <span class="hero-scroll-text">Scroll to Experience</span>
+    <a href="#scroll-story" class="hero-scroll-indicator reveal" style="transition-delay: 0.5s;" aria-label="Scroll to discover ingredients">
+      <span class="hero-scroll-text">Scroll to Discover</span>
       <div class="hero-scroll-mouse">
         <div class="hero-scroll-wheel"></div>
       </div>
@@ -2163,12 +2177,12 @@ function renderCheckoutView() {
                 <div class="checkout-form-section">
                   <h3 class="checkout-section-title">1. Customer Contact</h3>
                   <div class="form-group">
-                    <label class="form-label" for="checkout-email">Email Address for Confirmation</label>
-                    <input type="email" id="checkout-email" class="form-input" placeholder="connoisseur@aurevia.com" required value="${user ? user.email : 'eleanor.vance@example.com'}">
+                    <label class="form-label" for="checkout-email">Email Address <span class="required-star">*</span></label>
+                    <input type="email" id="checkout-email" class="form-input" placeholder="e.g. your.name@example.com" required value="">
                   </div>
                   <div class="form-group">
-                    <label class="form-label" for="checkout-phone">US Mobile Phone (for Delivery SMS)</label>
-                    <input type="tel" id="checkout-phone" class="form-input" placeholder="(212) 555-0198" required value="(212) 555-0198">
+                    <label class="form-label" for="checkout-phone">US Mobile Phone <span class="required-star">*</span></label>
+                    <input type="tel" id="checkout-phone" class="form-input" placeholder="e.g. (555) 000-0000" required value="">
                   </div>
                 </div>
 
@@ -2177,30 +2191,31 @@ function renderCheckoutView() {
                   <h3 class="checkout-section-title">2. US Domestic Shipping Destination</h3>
                   <div class="form-row">
                     <div class="form-group">
-                      <label class="form-label" for="checkout-first">First Name</label>
-                      <input type="text" id="checkout-first" class="form-input" required value="${user && user.displayName ? user.displayName.split(' ')[0] : 'Eleanor'}">
+                      <label class="form-label" for="checkout-first">First Name <span class="required-star">*</span></label>
+                      <input type="text" id="checkout-first" class="form-input" placeholder="First name" required value="">
                     </div>
                     <div class="form-group">
-                      <label class="form-label" for="checkout-last">Last Name</label>
-                      <input type="text" id="checkout-last" class="form-input" required value="${user && user.displayName && user.displayName.split(' ')[1] ? user.displayName.split(' ')[1] : 'Vance'}">
+                      <label class="form-label" for="checkout-last">Last Name <span class="required-star">*</span></label>
+                      <input type="text" id="checkout-last" class="form-input" placeholder="Last name" required value="">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="form-label" for="checkout-address">Street Address</label>
-                    <input type="text" id="checkout-address" class="form-input" required value="740 Park Avenue">
+                    <label class="form-label" for="checkout-address">Delivery Street Address <span class="required-star">*</span></label>
+                    <input type="text" id="checkout-address" class="form-input" placeholder="House number and street name" required value="">
                   </div>
                   <div class="form-group">
-                    <label class="form-label" for="checkout-apt">Apartment, Suite, Unit (Optional)</label>
-                    <input type="text" id="checkout-apt" class="form-input" value="Suite 12B">
+                    <label class="form-label" for="checkout-apt">Apartment, Suite, Unit <span class="optional-tag">(Optional)</span></label>
+                    <input type="text" id="checkout-apt" class="form-input" placeholder="Apt, Suite, Unit, Building (optional)" value="">
                   </div>
                   <div class="form-row">
                     <div class="form-group">
-                      <label class="form-label" for="checkout-city">City</label>
-                      <input type="text" id="checkout-city" class="form-input" required value="New York">
+                      <label class="form-label" for="checkout-city">City <span class="required-star">*</span></label>
+                      <input type="text" id="checkout-city" class="form-input" placeholder="City" required value="">
                     </div>
                     <div class="form-group">
-                      <label class="form-label" for="checkout-state">State (Sales Tax Recalculation)</label>
+                      <label class="form-label" for="checkout-state">State <span class="required-star">*</span></label>
                       <select id="checkout-state" class="form-select" required>
+                        <option value="" disabled ${!cart.selectedState ? 'selected' : ''}>Select State...</option>
                         ${US_STATES.map(s => `
                           <option value="${s.code}" ${s.code === cart.selectedState ? 'selected' : ''}>${s.name} (${(s.tax * 100).toFixed(2)}%)</option>
                         `).join('')}
@@ -2209,11 +2224,11 @@ function renderCheckoutView() {
                   </div>
                   <div class="form-row">
                     <div class="form-group">
-                      <label class="form-label" for="checkout-postal">US ZIP Code (5 Digits)</label>
-                      <input type="text" id="checkout-postal" class="form-input" pattern="^\\d{5}(-\\d{4})?$" title="Enter a valid 5-digit US ZIP Code" required value="10021">
+                      <label class="form-label" for="checkout-postal">US ZIP Code (5 Digits) <span class="required-star">*</span></label>
+                      <input type="text" id="checkout-postal" class="form-input" pattern="^\\d{5}(-\\d{4})?$" title="Enter a valid 5-digit US ZIP Code" placeholder="e.g. 10021" required value="">
                     </div>
                     <div class="form-group">
-                      <label class="form-label" for="checkout-country">Country</label>
+                      <label class="form-label" for="checkout-country">Country <span class="required-star">*</span></label>
                       <input type="text" id="checkout-country" class="form-input" value="United States" readonly style="opacity: 0.8; cursor: not-allowed;">
                     </div>
                   </div>
